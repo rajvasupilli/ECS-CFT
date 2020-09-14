@@ -7,6 +7,7 @@ Resources:
       Tags:
         - Key: environment
           Value: dev
+          
   taskdefinition: 
     Type: AWS::ECS::TaskDefinition
     Properties: 
