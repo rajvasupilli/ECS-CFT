@@ -3,7 +3,7 @@ Resources:
   ECSCluster:
     Type: 'AWS::ECS::Cluster'
     Properties:
-      ClusterName: MyCluster
+      ClusterName: ScalaCluster
       Tags:
         - Key: environment
           Value: dev
