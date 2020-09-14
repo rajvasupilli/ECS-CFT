@@ -14,7 +14,7 @@ Resources:
       RequiresCompatibilities:
         - "EC2"
         - "FARGATE"
-      NetworkMode: "awsvpc",
+      NetworkMode: "awsvpc"
       ContainerDefinitions: 
         - 
           Name: "my-app"
