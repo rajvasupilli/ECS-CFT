@@ -6,6 +6,9 @@ pipeline {
                 echo 'Build, Tag and Push the Docker Image into Docker Hub'
                 sh '''
                       aws cloudformation delete-stack --stack-name ecs-stack
+                      
+                      sleep 30;
+                      
                       aws cloudformation create-stack --stack-name ecs-stack --template-body file://create-ecs.yml
                    '''
             }
