@@ -19,7 +19,7 @@ Parameters:
   ServiceName:
     Type: String
     Default: ecs-service
-  LoadBalancerName:
+  Name:
     Type: String
     Default: ecs-alb
   HealthCheckGracePeriodSeconds:
@@ -116,7 +116,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       IpAddressType: ipv4
-      LoadBalancerName: !Ref LoadBalancerName
+      Name: !Ref LoadBalancerName
       Listeners:
         - InstancePort: !Ref AppHostPort
           LoadBalancerPort: '80'
