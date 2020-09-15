@@ -33,7 +33,7 @@ Parameters:
 #     Default: 
   Subnets:
     Type: List<AWS::EC2::Subnet::Id>
-    Default: [SubnetA, SubnetB]
+    Default: SubnetA, SubnetB
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
