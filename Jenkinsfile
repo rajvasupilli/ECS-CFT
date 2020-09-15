@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Create ECS Cluster') {
             steps {
-                echo 'Build, Tag and Push the Docker Image into Docker Hub'
+                echo 'Create ECS Resources'
                 sh '''
                       aws cloudformation delete-stack --stack-name ecs-stack
                       
