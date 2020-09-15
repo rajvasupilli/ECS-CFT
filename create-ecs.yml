@@ -32,7 +32,7 @@ Parameters:
 #     Type: AWS::EC2::VPC::Id
 #     Default: 
   Subnets:
-    Type: List<AWS::EC2::Subnet::Id>
+    Type: CommaDelimitedList
     Default: SubnetA, SubnetB
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
