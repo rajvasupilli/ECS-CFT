@@ -128,9 +128,9 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
-      Subnets: !Ref Subnets
+      Subnets: !Ref [SubnetA, SubnetB]
       SecurityGroups:
-        - !Ref SecurityGroup
+        - !Ref ALBSecurityGroup
       Tags:
         - Key: Name
           Value: !Ref EnvironmentName
@@ -155,6 +155,23 @@ Resources:
       VpcId: !Ref VPC
       Port: 80
       Protocol: HTTP
+  
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId:
+         Ref: myVPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
     
   VPC:
     Type: AWS::EC2::VPC
