@@ -13,12 +13,11 @@ Resources:
     Properties: 
       Cluster: "cluster"
       DesiredCount: "1"
-      TaskDefinition: "ecs-task-definition"
+      TaskDefinition: !Ref TaskDefinition
           
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties: 
-      Name: "ecs-task-definition"
       NetworkMode: "awsvpc"
       RequiresCompatibilities:
         - "FARGATE"
