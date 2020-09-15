@@ -113,8 +113,9 @@ Resources:
       Role: !Ref Role
       
   elb:
-    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
+      IpAddressType: ipv4
       LoadBalancerName: !Ref LoadBalancerName
       Listeners:
         - InstancePort: !Ref AppHostPort
