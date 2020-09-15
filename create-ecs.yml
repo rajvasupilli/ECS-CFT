@@ -33,7 +33,7 @@ Parameters:
 #     Default: 
   Subnets:
     Type: CommaDelimitedList
-    Default: SubnetA, SubnetB
+    Default: subnet1, subnet2
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
