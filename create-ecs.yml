@@ -14,11 +14,11 @@ Parameters:
     Description: Host port of app requiring ELB exposure
     Default: '80'
   ServiceName:
-    Type: String
+    Type: ecs-service
   LoadBalancerName:
-    Type: String
+    Type: ecs-alb
   HealthCheckGracePeriodSeconds:
-    Type: String
+    Type: 5
 Resources:
   cluster:
     Type: AWS::ECS::Cluster
