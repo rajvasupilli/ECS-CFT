@@ -43,19 +43,19 @@ Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: 172.31.0.0/16
+      CidrBlock: 10.0.0.0/24
       
   SubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 172.31.32.0/20
+      CidrBlock: 10.0.0.0/25
       
   SubnetB:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
-      CidrBlock: 172.61.62.0/20
+      CidrBlock: 10.0.0.128/25
       
   InternetGateway:
     Type: AWS::EC2::InternetGateway
