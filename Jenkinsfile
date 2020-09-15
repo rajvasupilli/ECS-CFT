@@ -5,9 +5,9 @@ pipeline {
             steps {
                 echo 'Create ECS Resources'
                 sh '''
-                      aws cloudformation delete-stack --stack-name ecs-stack
+                     # aws cloudformation delete-stack --stack-name ecs-stack
                       
-                      sleep 30;
+                     # sleep 30;
                       
                       aws cloudformation create-stack --stack-name ecs-stack --template-body file://create-ecs.yml --capabilities CAPABILITY_IAM
                    '''
