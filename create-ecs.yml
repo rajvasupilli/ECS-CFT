@@ -38,6 +38,8 @@ Resources:
       NetworkMode: "awsvpc"
       RequiresCompatibilities:
         - "FARGATE"
+      Cpu: 2048
+      Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
           Image: amazon/amazon-ecs-sample
