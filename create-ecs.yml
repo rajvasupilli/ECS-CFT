@@ -15,10 +15,13 @@ Parameters:
     Default: '80'
   ServiceName:
     Type: String
+    Default: ecs-service
   LoadBalancerName:
     Type: String
+    Default: ecs-alb
   HealthCheckGracePeriodSeconds:
-    Type: 5
+    Type: Number
+    Default: '30'
 Resources:
   cluster:
     Type: AWS::ECS::Cluster
