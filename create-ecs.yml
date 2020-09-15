@@ -4,7 +4,7 @@ Parameters:
   AppName:
     Type: String
     Description: Name of app requiring ELB exposure
-    Default: simple-app
+    Default: ecs-app
   AppContainerPort:
     Type: Number
     Description: Container port of app requiring ELB exposure
@@ -13,6 +13,9 @@ Parameters:
     Type: Number
     Description: Host port of app requiring ELB exposure
     Default: '80'
+  ClusterName:
+    Type: String
+    Default: ecs-cluster
   ServiceName:
     Type: String
     Default: ecs-service
@@ -22,12 +25,19 @@ Parameters:
   HealthCheckGracePeriodSeconds:
     Type: Number
     Default: '30'
+    
 Resources:
   cluster:
     Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: !Ref ClusterName
+      
   taskdefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
+      NetworkMode: "awsvpc"
+      RequiresCompatibilities:
+        - "FARGATE"
       ContainerDefinitions:
         - Name: !Ref AppName
           MountPoints:
@@ -62,6 +72,7 @@ Resources:
         - Host:
             SourcePath: /var/lib/docker/vfs/dir/
           Name: my-vol
+          
   service:
     Type: AWS::ECS::Service
     Properties:
@@ -87,6 +98,7 @@ Resources:
       TaskDefinition: !Ref taskdefinition
       ServiceName: !Ref ServiceName
       Role: !Ref Role
+      
   elb:
     Type: AWS::ElasticLoadBalancing::LoadBalancer
     Properties:
@@ -98,6 +110,7 @@ Resources:
       Subnets:
         - !Ref Subnet1
     DependsOn: GatewayAttachment
+    
   VPC:
     Type: AWS::EC2::VPC
     Properties:
@@ -114,6 +127,7 @@ Resources:
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
+      
   Role:
     Type: AWS::IAM::Role
     Properties:
