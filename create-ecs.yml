@@ -32,6 +32,29 @@ Resources:
     Properties:
       ClusterName: !Ref ClusterName
       
+  ECR-Repository: 
+  Type: AWS::ECR::Repository
+  Properties: 
+    RepositoryName: "scala-image-repo"
+    RepositoryPolicyText: 
+      Version: "2012-10-17"
+      Statement: 
+        - 
+          Sid: AllowPushPull
+          Effect: Allow
+          Principal: 
+            AWS: 
+              - "arn:aws:iam::654328202400:user/cloud_user"
+              
+          Action: 
+            - "ecr:GetDownloadUrlForLayer"
+            - "ecr:BatchGetImage"
+            - "ecr:BatchCheckLayerAvailability"
+            - "ecr:PutImage"
+            - "ecr:InitiateLayerUpload"
+            - "ecr:UploadLayerPart"
+            - "ecr:CompleteLayerUpload"
+      
   taskdefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
@@ -53,8 +76,8 @@ Resources:
             - FOREGROUND
           Memory: '500'
           Essential: true
-        - Name: busybox
-          Image: busybox
+        - Name: scala-image
+          Image: 654328202400.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           EntryPoint:
             - sh
@@ -62,60 +85,60 @@ Resources:
           Memory: '500'
           Essential: false
                    
-  service:
-    Type: AWS::ECS::Service
-    Properties:
-      Cluster: !Ref cluster
-      DeploymentConfiguration:
-        MaximumPercent: 200
-        MinimumHealthyPercent: 100
-      DesiredCount: 0
-      HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
-      LoadBalancers:
-        - ContainerName: !Ref AppName
-          ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref elb
-      PlacementStrategies:
-        - Type: binpack
-          Field: memory
-        - Type: spread
-          Field: host
-      PlacementConstraints:
-        - Type: memberOf
-          Expression: 'attribute:ecs.availability-zone != us-east-1d'
-        - Type: distinctInstance
-      TaskDefinition: !Ref taskdefinition
-      ServiceName: !Ref ServiceName
-      Role: !Ref Role
+#   service:
+#     Type: AWS::ECS::Service
+#     Properties:
+#       Cluster: !Ref cluster
+#       DeploymentConfiguration:
+#         MaximumPercent: 200
+#         MinimumHealthyPercent: 100
+#       DesiredCount: 0
+#       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
+#       LoadBalancers:
+#         - ContainerName: !Ref AppName
+#           ContainerPort: !Ref AppContainerPort
+#           LoadBalancerName: !Ref elb
+#       PlacementStrategies:
+#         - Type: binpack
+#           Field: memory
+#         - Type: spread
+#           Field: host
+#       PlacementConstraints:
+#         - Type: memberOf
+#           Expression: 'attribute:ecs.availability-zone != us-east-1d'
+#         - Type: distinctInstance
+#       TaskDefinition: !Ref taskdefinition
+#       ServiceName: !Ref ServiceName
+#       Role: !Ref Role
       
-  elb:
-    Type: AWS::ElasticLoadBalancing::LoadBalancer
-    Properties:
-      LoadBalancerName: !Ref LoadBalancerName
-      Listeners:
-        - InstancePort: !Ref AppHostPort
-          LoadBalancerPort: '80'
-          Protocol: HTTP
-      Subnets:
-        - !Ref Subnet1
-    DependsOn: GatewayAttachment
+#   elb:
+#     Type: AWS::ElasticLoadBalancing::LoadBalancer
+#     Properties:
+#       LoadBalancerName: !Ref LoadBalancerName
+#       Listeners:
+#         - InstancePort: !Ref AppHostPort
+#           LoadBalancerPort: '80'
+#           Protocol: HTTP
+#       Subnets:
+#         - !Ref Subnet1
+#     DependsOn: GatewayAttachment
     
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: 10.0.0.0/24
-  Subnet1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.0/25
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-  GatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
+#   VPC:
+#     Type: AWS::EC2::VPC
+#     Properties:
+#       CidrBlock: 10.0.0.0/24
+#   Subnet1:
+#     Type: AWS::EC2::Subnet
+#     Properties:
+#       VpcId: !Ref VPC
+#       CidrBlock: 10.0.0.0/25
+#   InternetGateway:
+#     Type: AWS::EC2::InternetGateway
+#   GatewayAttachment:
+#     Type: AWS::EC2::VPCGatewayAttachment
+#     Properties:
+#       InternetGatewayId: !Ref InternetGateway
+#       VpcId: !Ref VPC
       
   Role:
     Type: AWS::IAM::Role
