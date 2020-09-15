@@ -41,11 +41,8 @@ Resources:
   WebApp: 
     Type: AWS::ECS::Service
     Properties: 
-      Cluster: 
-        Ref: "cluster"
-      DesiredCount: 
-        Ref: "1"
-      TaskDefinition: 
-        Ref: "ecs-task-definition"
+      Cluster: "cluster"
+      DesiredCount: "1"
+      TaskDefinition: "ecs-task-definition"
     
   
