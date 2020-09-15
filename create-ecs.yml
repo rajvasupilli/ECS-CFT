@@ -31,9 +31,9 @@ Parameters:
 #   VPC:
 #     Type: AWS::EC2::VPC::Id
 #     Default: 
-#   Subnets:
-#     Type: List<AWS::EC2::Subnet::Id>
-#     Default:
+  Subnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Default: [SubnetA, SubnetB]
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
@@ -128,7 +128,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
-      Subnets: !Ref [SubnetA, SubnetB]
+      Subnets: !Ref Subnets
       SecurityGroups:
         - !Ref ALBSecurityGroup
       Tags:
@@ -215,3 +215,11 @@ Resources:
 Outputs:
   Cluster:
     Value: !Ref cluster
+    
+  LoadBalancer:
+    Description: A reference to the Application Load Balancer
+    Value: !Ref ApplicationLoadBalancer
+
+  LoadBalancerUrl:
+    Description: The URL of the ALB
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
