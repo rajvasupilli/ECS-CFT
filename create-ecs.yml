@@ -11,6 +11,7 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties: 
+	  Name: "ecs-task-definition"
       NetworkMode: "awsvpc"
       RequiresCompatibilities:
         - "FARGATE"
@@ -36,26 +37,15 @@ Resources:
             - "sh"
             - "-c"
           Memory: 512
-     
-  Type: AWS::ECS::Service
-  Properties: 
-    Cluster: 
-      Ref: "ECS-Cluster"
-    DesiredCount: 
-      Ref: "desiredcount"
-    TaskDefinition: 
-      Ref: "taskdefinition"
-          
-  ExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Join ['', [!Ref ServiceName, ExecutionRole]]
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
-      ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
 
+  WebApp: 
+    Type: AWS::ECS::Service
+    Properties: 
+      Cluster: 
+        Ref: "cluster"
+      DesiredCount: 
+        Ref: "desiredcount"
+      TaskDefinition: 
+        Ref: "taskdefinition"
+    
+  
