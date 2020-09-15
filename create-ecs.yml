@@ -116,7 +116,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       IpAddressType: ipv4
-      Name: !Ref LoadBalancerName
+      Name: !Ref Name
       Listeners:
         - InstancePort: !Ref AppHostPort
           LoadBalancerPort: '80'
