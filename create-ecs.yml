@@ -33,9 +33,9 @@ Resources:
       ClusterName: !Ref ClusterName
       
   ECR-Repository: 
-  Type: AWS::ECR::Repository
-  Properties: 
-    RepositoryName: "scala-image-repo"
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: "scala-image-repo"
 #     RepositoryPolicyText: 
 #       Version: "2012-10-17"
 #       Statement: 
