@@ -13,10 +13,10 @@ Parameters:
     Type: Number
     Description: Host port of app requiring ELB exposure
     Default: '80'
-#   ServiceName:
-#     Type: ecs-service
+  ServiceName:
+    Type: String
   LoadBalancerName:
-    Type: ecs-alb
+    Type: String
   HealthCheckGracePeriodSeconds:
     Type: 5
 Resources:
