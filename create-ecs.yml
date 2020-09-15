@@ -7,6 +7,13 @@ Resources:
       Tags:
         - Key: environment
           Value: dev
+  
+  WebApp: 
+    Type: AWS::ECS::Service
+    Properties: 
+      Cluster: "cluster"
+      DesiredCount: "1"
+      TaskDefinition: "ecs-task-definition"
           
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -38,11 +45,5 @@ Resources:
             - "-c"
           Memory: 512
 
-  WebApp: 
-    Type: AWS::ECS::Service
-    Properties: 
-      Cluster: "cluster"
-      DesiredCount: "1"
-      TaskDefinition: "ecs-task-definition"
     
   
