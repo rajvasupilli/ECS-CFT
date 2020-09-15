@@ -44,7 +44,7 @@ Resources:
 #             Effect: Allow
 #             Principal: 
 #               AWS: 
-#                 - "arn:aws:iam::654328202400:user/cloud_user"              
+#                 - "arn:aws:iam::167996500928:user/cloud_user"              
 #             Action: 
 #               - "ecr:GetDownloadUrlForLayer"
 #               - "ecr:BatchGetImage"
@@ -66,7 +66,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: amazon/amazon-ecs-sample
+          Image: 167996500928.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -78,7 +78,7 @@ Resources:
           Memory: '500'
           Essential: true
         - Name: scala-image
-          Image: 654328202400.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 167996500928.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           EntryPoint:
             - sh
@@ -137,7 +137,7 @@ Resources:
            Path: "/#{path}"
            Query: "#{query}"
            StatusCode: "HTTP_301"
-     LoadBalancerArn: !Ref alb
+     LoadBalancerArn: !Ref myLoadBalancer
      Port: 80
      Protocol: "HTTP"
     
