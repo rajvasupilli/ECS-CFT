@@ -31,9 +31,9 @@ Parameters:
 #   VPC:
 #     Type: AWS::EC2::VPC::Id
 #     Default: 
-  Subnets:
-    Type: List<AWS::EC2::Subnet::Id>
-    Default: SubnetA, SubnetB
+#   Subnets:
+#     Type: List<AWS::EC2::Subnet::Id>
+#     Default: SubnetA, SubnetB
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
@@ -186,7 +186,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
-      Subnets: !Ref Subnets
+      Subnets: !Ref SubnetA, SubnetB
       SecurityGroups:
         - !Ref ALBSecurityGroup
       Tags:
