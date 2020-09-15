@@ -6,15 +6,8 @@ Resources:
       ClusterName: ECS-Cluster
       Tags:
         - Key: environment
-          Value: dev
-  
-  WebApp: 
-    Type: AWS::ECS::Service
-    Properties: 
-      Cluster: "cluster"
-      DesiredCount: "1"
-      TaskDefinition: !Ref TaskDefinition
-          
+          Value: dev  
+           
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties: 
@@ -43,6 +36,13 @@ Resources:
             - "sh"
             - "-c"
           Memory: 512
+          
+   WebApp: 
+    Type: AWS::ECS::Service
+    Properties: 
+      Cluster: !Ref ECSCluster
+      DesiredCount: "1"
+      TaskDefinition: !Ref TaskDefinition
 
     
   
