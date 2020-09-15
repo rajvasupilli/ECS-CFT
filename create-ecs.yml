@@ -186,7 +186,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
-      Subnets: !Ref SubnetA, SubnetB
+      Subnets: !Ref SubnetA
       SecurityGroups:
         - !Ref ALBSecurityGroup
       Tags:
