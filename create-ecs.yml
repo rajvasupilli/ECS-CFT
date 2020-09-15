@@ -58,6 +58,7 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
+      ExecutionRoleArn: arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
         - "FARGATE"
       Cpu: 2048
