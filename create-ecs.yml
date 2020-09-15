@@ -36,6 +36,15 @@ Resources:
             - "sh"
             - "-c"
           Memory: 512
+     
+  Type: AWS::ECS::Service
+  Properties: 
+    Cluster: 
+      Ref: "ECS-Cluster"
+    DesiredCount: 
+      Ref: "desiredcount"
+    TaskDefinition: 
+      Ref: "taskdefinition"
           
   ExecutionRole:
     Type: AWS::IAM::Role
