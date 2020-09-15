@@ -25,6 +25,18 @@ Parameters:
   HealthCheckGracePeriodSeconds:
     Type: Number
     Default: '30'
+  LoadBalancerScheme:
+    Type: String
+    Default: 'internet-facing'
+#   VPC:
+#     Type: AWS::EC2::VPC::Id
+#     Default: 
+#   Subnets:
+#     Type: List<AWS::EC2::Subnet::Id>
+#     Default:
+#   SecurityGroup:
+#     Type: AWS::EC2::SecurityGroup::Id
+#     Default: 
     
 Resources:
   cluster:
@@ -148,13 +160,22 @@ Resources:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/24
-  Subnet1:
+      
+  SubnetA:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref VPC
       CidrBlock: 10.0.0.0/25
+      
+  SubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.0.0/26
+      
   InternetGateway:
     Type: AWS::EC2::InternetGateway
+    
   GatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
