@@ -36,29 +36,30 @@ Resources:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "scala-image-repo"
-      RepositoryPolicyText: 
-        Version: "2012-10-17"
-        Statement: 
-          - 
-            Sid: AllowPushPull
-            Effect: Allow
-            Principal: 
-              AWS: 
-                - "arn:aws:iam::654328202400:user/cloud_user"              
-            Action: 
-              - "ecr:GetDownloadUrlForLayer"
-              - "ecr:BatchGetImage"
-              - "ecr:BatchCheckLayerAvailability"
-              - "ecr:PutImage"
-              - "ecr:InitiateLayerUpload"
-              - "ecr:UploadLayerPart"
-              - "ecr:CompleteLayerUpload"
+#       RepositoryPolicyText: 
+#         Version: "2012-10-17"
+#         Statement: 
+#           - 
+#             Sid: AllowPushPull
+#             Effect: Allow
+#             Principal: 
+#               AWS: 
+#                 - "arn:aws:iam::654328202400:user/cloud_user"              
+#             Action: 
+#               - "ecr:GetDownloadUrlForLayer"
+#               - "ecr:BatchGetImage"
+#               - "ecr:BatchCheckLayerAvailability"
+#               - "ecr:PutImage"
+#               - "ecr:InitiateLayerUpload"
+#               - "ecr:UploadLayerPart"
+#               - "ecr:CompleteLayerUpload"
       
   taskdefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
-      ExecutionRoleArn: arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
+      ExecutionRoleArn: !Ref Role
+#       arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
         - "FARGATE"
       Cpu: 2048
