@@ -6,11 +6,12 @@ Resources:
       ClusterName: ECS-Cluster
       Tags:
         - Key: environment
-          Value: dev  
-           
+          Value: dev
+          
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties: 
+      Name: "ecs-task-definition"
       NetworkMode: "awsvpc"
       RequiresCompatibilities:
         - "FARGATE"
@@ -36,13 +37,12 @@ Resources:
             - "sh"
             - "-c"
           Memory: 512
-          
-   WebApp: 
+
+  WebApp: 
     Type: AWS::ECS::Service
     Properties: 
       Cluster: !Ref ECSCluster
       DesiredCount: "1"
       TaskDefinition: !Ref TaskDefinition
-
     
   
