@@ -200,7 +200,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref { "Fn::GetAtt" : [ "ALB", "LoadBalancerName" ] }
+          LoadBalancerName: Scala
       PlacementStrategies:
         - Type: binpack
           Field: memory
