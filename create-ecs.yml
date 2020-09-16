@@ -28,12 +28,12 @@ Parameters:
   LoadBalancerScheme:
     Type: String
     Default: 'internet-facing'
-#   VPC:
-#     Type: AWS::EC2::VPC::Id
-#     Default: 
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-0579434dafbf2a0a8
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet1, subnet2
+    Default: subnet-068bd136245635a41, subnet-020d1f3f0c3f9082b
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
