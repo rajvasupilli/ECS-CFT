@@ -197,10 +197,10 @@ Resources:
         MinimumHealthyPercent: 100
       DesiredCount: 0
       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
-      LoadBalancers:
-        - ContainerName: !Ref AppName
-          ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref elb
+#       LoadBalancers:
+#         - ContainerName: !Ref AppName
+#           ContainerPort: !Ref AppContainerPort
+#           LoadBalancerName: !Ref elb
       PlacementStrategies:
         - Type: binpack
           Field: memory
