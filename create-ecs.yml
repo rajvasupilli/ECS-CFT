@@ -200,7 +200,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: Fn::GetAtt" : [ "ALB", "LoadBalancerName" ] 
+          LoadBalancerName: Fn::GetAtt : [ "ALB", "LoadBalancerName" ] 
       PlacementStrategies:
         - Type: binpack
           Field: memory
