@@ -136,7 +136,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 167996500928.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 322072859459.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -175,12 +175,12 @@ Resources:
       Protocol: HTTP
       DefaultActions:
         - Type: forward
-          TargetGroupArn: !Ref DefaultTargetGroup
+          TargetGroupArn: !Ref TargetGroup
 
   # We define a default target group here, as this is a mandatory Parameters
   # when creating an Application Load Balancer Listener. This is not used, instead
   # a target group is created per-service in each service template (../services/*)
-  DefaultTargetGroup:
+  TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Sub ${EnvironmentName}-default
@@ -200,7 +200,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: { "Fn::GetAtt" : [ "ALB", "LoadBalancerName" ] }
+          TargetGroupArn: !Ref TargetGroup
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -214,14 +214,3 @@ Resources:
       ServiceName: !Ref ServiceName
       Role: !Ref Role
   
-Outputs:
-  Cluster:
-    Value: !Ref cluster
-    
-  LoadBalancer:
-    Description: A reference to the Application Load Balancer
-    Value: !GetAtt ALB.Name
-
-  LoadBalancerUrl:
-    Description: The URL of the ALB
-    Value: !GetAtt ALB.DNSName
