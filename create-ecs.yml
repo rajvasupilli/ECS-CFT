@@ -168,7 +168,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref AppLoadBalancer
+          LoadBalancerName: !Ref LoadBalancer
       PlacementStrategies:
         - Type: binpack
           Field: memory
