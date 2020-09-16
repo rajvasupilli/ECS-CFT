@@ -196,7 +196,7 @@ Resources:
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      LoadBalancerArn: !Ref { "Fn::GetAtt" : [ "loadBalancer", "LoadBalancerName" ] }
+      LoadBalancerArn: !Ref alb
       Port: 80
       Protocol: HTTP
       DefaultActions:
