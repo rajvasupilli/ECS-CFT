@@ -200,7 +200,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: Scala
+          LoadBalancerName: Fn::GetAtt" : [ "ALB", "LoadBalancerName" ] 
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -214,14 +214,14 @@ Resources:
       ServiceName: !Ref ServiceName
       Role: !Ref Role
   
-# Outputs:
-#   Cluster:
-#     Value: !Ref cluster
+Outputs:
+  Cluster:
+    Value: !Ref cluster
     
-#   LoadBalancer:
-#     Description: A reference to the Application Load Balancer
-#     Value: !Ref alb
+  LoadBalancer:
+    Description: A reference to the Application Load Balancer
+    Value: !GetAtt ALB.Name
 
-#   LoadBalancerUrl:
-#     Description: The URL of the ALB
-#     Value: !GetAtt LoadBalancer.DNSName
+  LoadBalancerUrl:
+    Description: The URL of the ALB
+    Value: !GetAtt ALB.DNSName
