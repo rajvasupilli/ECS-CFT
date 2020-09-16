@@ -168,7 +168,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref LoadBalancer
+          LoadBalancerName: !Ref alb
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -182,7 +182,7 @@ Resources:
       ServiceName: !Ref ServiceName
       Role: !Ref Role
       
-  LoadBalancer:
+  alb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
@@ -196,7 +196,7 @@ Resources:
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      LoadBalancerArn: !Ref LoadBalancer
+      LoadBalancerArn: !Ref alb
       Port: 80
       Protocol: HTTP
       DefaultActions:
@@ -220,7 +220,7 @@ Outputs:
     
   LoadBalancer:
     Description: A reference to the Application Load Balancer
-    Value: !Ref LoadBalancer
+    Value: !Ref alb
 
   LoadBalancerUrl:
     Description: The URL of the ALB
