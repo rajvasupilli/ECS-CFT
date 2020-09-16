@@ -154,33 +154,7 @@ Resources:
             - sh
             - '-c'
           Memory: '500'
-          Essential: false
-                   
-#   service:
-#     Type: AWS::ECS::Service
-#     Properties:
-#       Cluster: !Ref cluster
-#       DeploymentConfiguration:
-#         MaximumPercent: 200
-#         MinimumHealthyPercent: 100
-#       DesiredCount: 0
-#       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
-#       LoadBalancers:
-#         - ContainerName: !Ref AppName
-#           ContainerPort: !Ref AppContainerPort
-#           LoadBalancerName: !Ref { "Fn::GetAtt" : [ "alb", "LoadBalancerName" ] }
-#       PlacementStrategies:
-#         - Type: binpack
-#           Field: memory
-#         - Type: spread
-#           Field: host
-#       PlacementConstraints:
-#         - Type: memberOf
-#           Expression: 'attribute:ecs.availability-zone != us-east-1d'
-#         - Type: distinctInstance
-#       TaskDefinition: !Ref taskdefinition
-#       ServiceName: !Ref ServiceName
-#       Role: !Ref Role
+          Essential: false                  
       
   alb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -212,7 +186,33 @@ Resources:
       Name: !Sub ${EnvironmentName}-default
       VpcId: !Ref VPC
       Port: 80
-      Protocol: HTTP    
+      Protocol: HTTP 
+   
+  service:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref cluster
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: 0
+      HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
+      LoadBalancers:
+        - ContainerName: !Ref AppName
+          ContainerPort: !Ref AppContainerPort
+          LoadBalancerName: !Ref { "Fn::GetAtt" : [ "alb", "LoadBalancerName" ] }
+      PlacementStrategies:
+        - Type: binpack
+          Field: memory
+        - Type: spread
+          Field: host
+      PlacementConstraints:
+        - Type: memberOf
+          Expression: 'attribute:ecs.availability-zone != us-east-1d'
+        - Type: distinctInstance
+      TaskDefinition: !Ref taskdefinition
+      ServiceName: !Ref ServiceName
+      Role: !Ref Role
   
 # Outputs:
 #   Cluster:
