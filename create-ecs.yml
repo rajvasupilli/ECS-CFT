@@ -182,7 +182,7 @@ Resources:
       ServiceName: !Ref ServiceName
       Role: !Ref Role
       
-  AppLoadBalancer:
+  LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
@@ -196,7 +196,7 @@ Resources:
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      LoadBalancerArn: !Ref AppLoadBalancer
+      LoadBalancerArn: !Ref LoadBalancer
       Port: 80
       Protocol: HTTP
       DefaultActions:
@@ -220,8 +220,8 @@ Outputs:
     
   LoadBalancer:
     Description: A reference to the Application Load Balancer
-    Value: !Ref AppLoadBalancer
+    Value: !Ref LoadBalancer
 
   LoadBalancerUrl:
     Description: The URL of the ALB
-    Value: !GetAtt AppLoadBalancer.DNSName
+    Value: !GetAtt LoadBalancer.DNSName
