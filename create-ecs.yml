@@ -40,31 +40,31 @@ Parameters:
     
 Resources:
   
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: 10.0.0.0/24
+#   VPC:
+#     Type: AWS::EC2::VPC
+#     Properties:
+#       CidrBlock: 10.0.0.0/24
       
-  SubnetA:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.0/25
+#   SubnetA:
+#     Type: AWS::EC2::Subnet
+#     Properties:
+#       VpcId: !Ref VPC
+#       CidrBlock: 10.0.0.0/25
       
-  SubnetB:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref VPC
-      CidrBlock: 10.0.0.128/25
+#   SubnetB:
+#     Type: AWS::EC2::Subnet
+#     Properties:
+#       VpcId: !Ref VPC
+#       CidrBlock: 10.0.0.128/25
       
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
+#   InternetGateway:
+#     Type: AWS::EC2::InternetGateway
     
-  GatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
+#   GatewayAttachment:
+#     Type: AWS::EC2::VPCGatewayAttachment
+#     Properties:
+#       InternetGatewayId: !Ref InternetGateway
+#       VpcId: !Ref VPC
    
   ALBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
