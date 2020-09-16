@@ -168,7 +168,7 @@ Resources:
       LoadBalancers:
         - ContainerName: !Ref AppName
           ContainerPort: !Ref AppContainerPort
-          LoadBalancerName: !Ref alb
+          LoadBalancerName: !Ref { "Fn::GetAtt" : [ "loadBalancer", "LoadBalancerName" ] }
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -196,7 +196,7 @@ Resources:
   LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      LoadBalancerArn: !Ref alb
+      LoadBalancerArn: !Ref { "Fn::GetAtt" : [ "loadBalancer", "LoadBalancerName" ] }
       Port: 80
       Protocol: HTTP
       DefaultActions:
