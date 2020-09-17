@@ -8,11 +8,11 @@ Parameters:
   AppContainerPort:
     Type: Number
     Description: Container port of app requiring ALB exposure
-    Default: '80'
+    Default: '9000'
   AppHostPort:
     Type: Number
     Description: Host port of app requiring ALB exposure
-    Default: '80'
+    Default: '9000'
   ClusterName:
     Type: String
     Default: ecs-cluster
@@ -127,7 +127,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 906041846662.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -139,7 +139,7 @@ Resources:
           Memory: '500'
           Essential: true
         - Name: scala-image
-          Image: 906041846662.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           EntryPoint:
             - sh
