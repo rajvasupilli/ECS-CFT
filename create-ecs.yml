@@ -152,8 +152,8 @@ Resources:
     Properties:
       Name: !Ref EnvironmentName
       Subnets: !Ref Subnets 
-      SecurityGroups:
-        - !GetAtt "ALBSecurityGroup.GroupId"
+#       SecurityGroups:
+#         - !GetAtt "ALBSecurityGroup.GroupId"
       Tags:
         - Key: Name
           Value: !Ref EnvironmentName
@@ -218,7 +218,7 @@ Resources:
           NetworkConfiguration:
             AwsVpcConfiguration:
               AssignPublicIp: DISABLED
-              SecurityGroups: 
-                - !GetAtt "TaskSecurityGroup.GroupId"
+#               SecurityGroups: 
+#                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
         Arn: !Ref Role
