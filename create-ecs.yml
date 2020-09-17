@@ -150,7 +150,7 @@ Resources:
     Type: AWS::ECS::Service
     # This dependency is needed so that the load balancer is setup correctly in time
     DependsOn:
-      - ListenerHTTPS
+      - ListenerHTTP
     Properties: 
       ServiceName: !Ref ServiceName
       Cluster: !Ref Cluster
