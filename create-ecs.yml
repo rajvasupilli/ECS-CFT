@@ -190,14 +190,14 @@ Resources:
         MinimumHealthyPercent: 100
       DesiredCount: '2'
       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
-      LoadBalancers:
-        - ContainerName: !Ref "AppName"
-          ContainerPort: !Ref AppContainerPort
-          TargetGroupArn: !Ref TargetGroup
+#       LoadBalancers:
+#         - ContainerName: !Ref "AppName"
+#           ContainerPort: !Ref AppContainerPort
+#           TargetGroupArn: !Ref TargetGroup
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: 'ENABLED'
-          Subnets: !Ref Subnets 
+#           Subnets: !Ref Subnets 
 #           SecurityGroups: !Ref TaskSecurityGroup          
 #       Role: !Ref Role
      
