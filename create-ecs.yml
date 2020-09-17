@@ -201,8 +201,8 @@ Resources:
       LoadBalancerArn: !Ref LoadBalancer
       Port: !Ref LoadBalancerPort
       Protocol: HTTP
-      Certificates:
-        - CertificateArn: !Ref Certificate
+      #Certificates:
+        #- CertificateArn: !Ref Certificate
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
