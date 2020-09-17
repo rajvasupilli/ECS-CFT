@@ -223,4 +223,4 @@ Resources:
 #                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
         Arn: 
-             - Fn::GetAtt: EcsCluster.Arn
+             - Fn::GetAtt: ecscluster.Arn
