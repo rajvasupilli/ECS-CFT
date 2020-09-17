@@ -78,13 +78,13 @@ Resources:
           Image: !Ref Image
           PortMappings:
             - ContainerPort: !Ref ContainerPort
-          # Send logs to CloudWatch Logs
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-region: !Ref AWS::Region
-              awslogs-group: !Ref LogGroup
-              awslogs-stream-prefix: ecs
+#           # Send logs to CloudWatch Logs
+#           LogConfiguration:
+#             LogDriver: awslogs
+#             Options:
+#               awslogs-region: !Ref AWS::Region
+#               awslogs-group: !Ref LogGroup
+#               awslogs-stream-prefix: ecs
   # A role needed by ECS
   ExecutionRole:
     Type: AWS::IAM::Role
