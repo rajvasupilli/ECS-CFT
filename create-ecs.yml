@@ -33,7 +33,7 @@ Parameters:
     Default: vpc-0e34cf12359bb0b75
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-02f78c961f8031c9f, subnet-02f78c961f8031c9f
+    Default: subnet-02f78c961f8031c9f, subnet-0e2555815ba730b91
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
