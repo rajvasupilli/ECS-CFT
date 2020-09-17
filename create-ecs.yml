@@ -110,7 +110,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 065379774893.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 906041846662.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -122,7 +122,7 @@ Resources:
           Memory: '500'
           Essential: true
         - Name: scala-image
-          Image: 065379774893.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 906041846662.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
           Cpu: '10'
           EntryPoint:
             - sh
