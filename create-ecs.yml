@@ -168,9 +168,6 @@ Resources:
         - Type: forward
           TargetGroupArn: !Ref TargetGroup
 
-  # We define a default target group here, as this is a mandatory Parameters
-  # when creating an Application Load Balancer Listener. This is not used, instead
-  # a target group is created per-service in each service template (../services/*)
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -179,6 +176,28 @@ Resources:
       VpcId: !Ref VPC
       Port: 80
       Protocol: HTTP 
+      
+#   Type: AWS::Events::Rule
+#     Properties:
+#       Description: !Sub 'Trigger ${ServiceName} according to the specified schedule'
+#       ScheduleExpression: cron(10 * * * ? *)
+#       State: ENABLED
+#       Targets:
+#       - Id: !Sub '${ServiceName}-Fargate-Task'
+#         RoleArn: <Role Arn>
+#         EcsParameters:
+#           TaskDefinitionArn: !Ref TaskDefinition
+#           TaskCount: 1
+#           LaunchType: 'FARGATE'
+#           PlatformVersion: 'LATEST'
+#           NetworkConfiguration:
+#             AwsVpcConfiguration:
+#               AssignPublicIp: DISABLED
+#               SecurityGroups:
+#                 - <Security Group>
+#               Subnets:
+#                 - <Subnets>
+#         Arn: <Role ARN.
    
   service:
     Type: AWS::ECS::Service
@@ -198,7 +217,7 @@ Resources:
           ContainerPort: !Ref AppContainerPort
           TargetGroupArn: !Ref TargetGroup
       NetworkConfiguration:
-        AwsVpcConfiguration:
+        AwsvpcConfiguration:
           AssignPublicIp: 'ENABLED'
           Subnets: !Ref Subnets 
           SecurityGroups: !Ref TaskSecurityGroup
