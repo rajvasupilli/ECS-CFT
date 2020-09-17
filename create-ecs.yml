@@ -200,6 +200,8 @@ Resources:
       NetworkConfiguration: 	
         AwsvpcConfiguration:	
 	  AssignPublicIp: 'ENABLED'
+	  Subnets: !Ref Subnets 
+          SecurityGroups: !Ref TaskSecurityGroup
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -210,7 +212,5 @@ Resources:
           Expression: 'attribute:ecs.availability-zone != us-east-1d'
         - Type: distinctInstance            
       Role: !Ref Role
-      Subnets: !Ref Subnets 
-      SecurityGroups:
-        - !Ref TaskSecurityGroup
+      
   
