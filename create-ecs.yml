@@ -198,6 +198,39 @@ Resources:
 #               Subnets:
 #                 - <Subnets>
 #         Arn: <Role ARN.
+
+  
+
+In order to define a scheduled ECS task in CloudFormation, you need to define a "AWS::Events::Rule" resource with an ECS task as a target.
+
+"TaskSchedule": {
+  "Type": "AWS::Events::Rule",
+  "Properties": {
+    "Description": "Run the scheduled task everyday at 10 AM, except for Weekend",
+    "Name": "scala-scheduled-task",
+    "ScheduleExpression": "cron(0 10 ? * MON-FRI *)",
+    "State": "ENABLED",
+    "Targets": [
+      {
+        "Id": "scala-ecs-task",
+        "RoleArn": {
+          "Fn::GetAtt": ["TaskSchedulerRole", "Arn"]
+        },
+        "EcsParameters": {
+          "TaskDefinitionArn": {
+            "Ref": "TaskDefinition"
+          },
+          "TaskCount": 1
+        },
+        "Arn": {
+          "Fn::GetAtt": ["EcsCluster", "Arn"]
+        }
+      }
+    ]
+  }
+}
+
+
    
   service:
     Type: AWS::ECS::Service
