@@ -97,23 +97,23 @@ Resources:
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "scala-image-repo"
-#       RepositoryPolicyText: 
-#         Version: "2012-10-17"
-#         Statement: 
-#           - 
-#             Sid: AllowPushPull
-#             Effect: Allow
-#             Principal: 
-#               AWS: 
-#                 - "arn:aws:iam::167996500928:user/cloud_user"              
-#             Action: 
-#               - "ecr:GetDownloadUrlForLayer"
-#               - "ecr:BatchGetImage"
-#               - "ecr:BatchCheckLayerAvailability"
-#               - "ecr:PutImage"
-#               - "ecr:InitiateLayerUpload"
-#               - "ecr:UploadLayerPart"
-#               - "ecr:CompleteLayerUpload"
+      RepositoryPolicyText: 
+        Version: "2012-10-17"
+        Statement: 
+          - 
+            Sid: AllowPushPull
+            Effect: Allow
+            Principal: 
+              AWS: 
+                - "arn:aws:iam::566716581275:user/cloud_user"              
+            Action: 
+              - "ecr:GetDownloadUrlForLayer"
+              - "ecr:BatchGetImage"
+              - "ecr:BatchCheckLayerAvailability"
+              - "ecr:PutImage"
+              - "ecr:InitiateLayerUpload"
+              - "ecr:UploadLayerPart"
+              - "ecr:CompleteLayerUpload"
       
   taskdefinition:
     Type: AWS::ECS::TaskDefinition
@@ -127,7 +127,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -139,7 +139,7 @@ Resources:
           Memory: '500'
           Essential: true
         - Name: scala-image
-          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           EntryPoint:
             - sh
@@ -212,7 +212,7 @@ Resources:
         RoleArn: !Ref Role
         EcsParameters:
           TaskDefinitionArn: 
-             - !GetAtt "taskdefinition.Arn"
+            - Fn::GetAtt: taskdefinition.Arn
           TaskCount: 1
           LaunchType: 'FARGATE'
           PlatformVersion: 'LATEST'
@@ -223,4 +223,4 @@ Resources:
 #                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
         Arn: 
-          - Fn::GetAtt": "EcsCluster.Arn"
+             - Fn::GetAtt: EcsCluster.Arn
