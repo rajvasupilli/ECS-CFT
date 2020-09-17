@@ -56,6 +56,23 @@ Resources:
         FromPort: 80
         ToPort: 80
         CidrIp: 0.0.0.0/0
+        
+  TaskSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId:
+         Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 9000
+        ToPort: 9000
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 9000
+        ToPort: 9000
+        CidrIp: 0.0.0.0/0
       
   Role:
     Type: AWS::IAM::Role
@@ -168,6 +185,9 @@ Resources:
     DependsOn: LoadBalancerListener
     Properties:
       Cluster: !Ref cluster
+      ServiceName: !Ref ServiceName
+      LaunchType: FARGATE
+      TaskDefinition: !Ref taskdefinition
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
@@ -177,6 +197,9 @@ Resources:
         - ContainerName: !Ref "AppName"
           ContainerPort: !Ref AppContainerPort
           TargetGroupArn: !Ref TargetGroup
+      NetworkConfiguration: 	
+		  AwsvpcConfiguration:	
+		  AssignPublicIp: DISABLED
       PlacementStrategies:
         - Type: binpack
           Field: memory
@@ -185,8 +208,9 @@ Resources:
       PlacementConstraints:
         - Type: memberOf
           Expression: 'attribute:ecs.availability-zone != us-east-1d'
-        - Type: distinctInstance
-      TaskDefinition: !Ref taskdefinition
-      ServiceName: !Ref ServiceName
+        - Type: distinctInstance            
       Role: !Ref Role
+      Subnets: !Ref Subnets 
+      SecurityGroups:
+        - !Ref TaskSecurityGroup
   
