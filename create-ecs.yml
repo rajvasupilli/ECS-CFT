@@ -115,17 +115,17 @@ Resources:
     Properties:
       GroupDescription: !Join ['', [!Ref ServiceName, ContainerSecurityGroup]]
       VpcId: !Ref VPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: !Ref ContainerPort
-          ToPort: !Ref ContainerPort
-          SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
+#       SecurityGroupIngress:
+#         - IpProtocol: tcp
+#           FromPort: !Ref ContainerPort
+#           ToPort: !Ref ContainerPort
+#           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
  
   Service:
     Type: AWS::ECS::Service
     # This dependency is needed so that the load balancer is setup correctly in time
-    DependsOn:
-      - ListenerHTTP
+#     DependsOn:
+#       - ListenerHTTP
     Properties: 
       ServiceName: !Ref ServiceName
       Cluster: !Ref Cluster
@@ -146,7 +146,7 @@ Resources:
             - !Ref SubnetB
           SecurityGroups:
             - !Ref ContainerSecurityGroup
-      LoadBalancers:
-        - ContainerName: !Ref ServiceName
-          ContainerPort: !Ref ContainerPort
-          TargetGroupArn: !Ref TargetGroup
+#       LoadBalancers:
+#         - ContainerName: !Ref ServiceName
+#           ContainerPort: !Ref ContainerPort
+#           TargetGroupArn: !Ref TargetGroup
