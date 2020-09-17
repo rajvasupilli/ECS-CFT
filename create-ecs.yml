@@ -25,12 +25,12 @@ Parameters:
   ContainerPort:
     Type: Number
     Default: 9000
-  LoadBalancerPort:
-    Type: Number
-    Default: 80
-  HealthCheckPath:
-    Type: String
-    Default: /healthcheck
+#   LoadBalancerPort:
+#     Type: Number
+#     Default: 80
+#   HealthCheckPath:
+#     Type: String
+#     Default: /healthcheck
 #   HostedZoneName:
 #     Type: String
 #     Default: company.com
