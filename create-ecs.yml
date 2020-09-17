@@ -209,7 +209,7 @@ Resources:
       State: ENABLED
       Targets:
       - Id: !Ref ServiceName
-        RoleArn: !Ref Role
+#         RoleArn: !Ref Role
         EcsParameters:
           TaskDefinitionArn: !Ref taskdefinition
           TaskCount: 1
