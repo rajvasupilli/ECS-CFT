@@ -54,6 +54,12 @@ Resources:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Join ['', [!Ref ServiceName, Cluster]]
+      
+  ECR: 
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: "scala-image-repo"
+      
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     # Makes sure the log group is created before it is used.
