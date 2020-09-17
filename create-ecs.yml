@@ -208,11 +208,18 @@ Resources:
       ScheduleExpression: cron(10 * * * ? *)
       State: ENABLED
       Targets:
-      - Id: !Ref ServiceName
-        RoleArn: !Ref Role
+      - Arn: !GetAtt 
+          - ecs-cluster
+          - Arn
+        RoleArn: !GetAtt 
+          - Role
+          - Arn
+        Id: !Ref ServiceName
+#         RoleArn: !Ref Role
         EcsParameters:
-          TaskDefinitionArn: 
-            - Fn::GetAtt: taskdefinition.Arn
+          TaskDefinitionArn: !GetAtt 
+          - taskdefinition
+          - Arn
           TaskCount: 1
           LaunchType: 'FARGATE'
           PlatformVersion: 'LATEST'
@@ -222,5 +229,4 @@ Resources:
 #               SecurityGroups: 
 #                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
-        Arn: 
-             - Fn::GetAtt: cluster.Arn
+        
