@@ -217,9 +217,10 @@ Resources:
         Id: !Ref ServiceName
 #         RoleArn: !Ref Role
         EcsParameters:
-          TaskDefinitionArn: !GetAtt 
-          - taskdefinition
-          - Arn
+          TaskDefinitionArn: !Ref taskdefinition 
+#           TaskDefinitionArn: !GetAtt 
+#           - taskdefinition
+#           - Arn
           TaskCount: 1
           LaunchType: 'FARGATE'
           PlatformVersion: 'LATEST'
