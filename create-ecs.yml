@@ -88,7 +88,7 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole'
   
-  cluster:
+  ecs-cluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Ref ClusterName
@@ -188,7 +188,7 @@ Resources:
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
-      DesiredCount: '0'
+      DesiredCount: '1'
       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
       LoadBalancers:
         - ContainerName: !Ref "AppName"
@@ -230,4 +230,3 @@ Resources:
 #               SecurityGroups: 
 #                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
-        
