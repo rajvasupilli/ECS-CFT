@@ -218,6 +218,6 @@ Resources:
           NetworkConfiguration:
             AwsVpcConfiguration:
               AssignPublicIp: DISABLED
-              SecurityGroups: !Ref TaskSecurityGroup
+#               SecurityGroups: !Ref TaskSecurityGroup
               Subnets: !Ref Subnets
         Arn: !Ref Role
