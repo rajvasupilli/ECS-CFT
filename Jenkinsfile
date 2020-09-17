@@ -9,7 +9,7 @@ pipeline {
                       
                         sleep 30;
                       
-                      aws cloudformation create-stack --stack-name ecs-stack --template-body file://create-ecs.yml --capabilities CAPABILITY_NAMED_IAM
+                      aws cloudformation create-stack --stack-name ecs-stack --template-body file://create-ecs-stack.yml --capabilities CAPABILITY_NAMED_IAM
                    '''
             }
         }
