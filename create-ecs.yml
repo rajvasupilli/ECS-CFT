@@ -15,7 +15,7 @@ Parameters:
     Default: '9000'
   ClusterName:
     Type: String
-    Default: ecs-cluster
+    Default: cluster
   ServiceName:
     Type: String
     Default: ecs-service
@@ -181,7 +181,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerListener
     Properties:
-      Cluster: !Ref ecs-cluster
+      Cluster: !Ref ClusterName
       ServiceName: !Ref ServiceName
       LaunchType: FARGATE
       TaskDefinition: !Ref taskdefinition
@@ -209,7 +209,7 @@ Resources:
       State: ENABLED
       Targets:
       - Arn: !GetAtt 
-          - ecs-cluster
+          - cluster
           - Arn
         RoleArn: !GetAtt 
           - Role
