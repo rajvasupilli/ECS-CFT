@@ -209,7 +209,7 @@ Resources:
       State: ENABLED
       Targets:
       - Arn: !GetAtt 
-          - ecs-cluster
+          - cluster
           - Arn
         RoleArn: !GetAtt 
           - Role
