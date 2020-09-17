@@ -201,23 +201,23 @@ Resources:
 #           SecurityGroups: !Ref TaskSecurityGroup          
 #       Role: !Ref Role
      
-  Cron:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: !Sub 'Run the ECS task every 10 minutes'
-      ScheduleExpression: cron(10 * * * ? *)
-      State: ENABLED
-      Targets:
-      - Id: !Ref ServiceName
-        RoleArn: !Ref Role
-        EcsParameters:
-          TaskDefinitionArn: !Ref taskdefinition
-          TaskCount: 1
-          LaunchType: 'FARGATE'
-          PlatformVersion: 'LATEST'
-          NetworkConfiguration:
-            AwsVpcConfiguration:
-              AssignPublicIp: DISABLED
-#               SecurityGroups: !Ref TaskSecurityGroup
-              Subnets: !Ref Subnets
-        Arn: !Ref Role
+#   Cron:
+#     Type: AWS::Events::Rule
+#     Properties:
+#       Description: !Sub 'Run the ECS task every 10 minutes'
+#       ScheduleExpression: cron(10 * * * ? *)
+#       State: ENABLED
+#       Targets:
+#       - Id: !Ref ServiceName
+#         RoleArn: !Ref Role
+#         EcsParameters:
+#           TaskDefinitionArn: !Ref taskdefinition
+#           TaskCount: 1
+#           LaunchType: 'FARGATE'
+#           PlatformVersion: 'LATEST'
+#           NetworkConfiguration:
+#             AwsVpcConfiguration:
+#               AssignPublicIp: DISABLED
+# #               SecurityGroups: !Ref TaskSecurityGroup
+#               Subnets: !Ref Subnets
+#         Arn: !Ref Role
