@@ -1,158 +1,223 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: An example CloudFormation template for Fargate.
+Description: Creating ECS service
 Parameters:
-  VPC:
-    Type: AWS::EC2::VPC::Id
-    Default: vpc-03282e125604dceea
-  SubnetA:
-    Type: AWS::EC2::Subnet::Id
-    Default: subnet-016f6ff7c3504c595
-  SubnetB:
-    Type: AWS::EC2::Subnet::Id
-    Default: subnet-096149c6d9d375485
-#   Certificate:
-#     Type: String
-#     # Update with the certificate ARN from Certificate Manager, which must exist in the same region.
-#     Default: 'arn:aws:acm:region:123456789012:certificate/00000000-0000-0000-0000-000000000000'
-  Image:
+  AppName:
     Type: String
-    # Update with the Docker image. "You can use images in the Docker Hub registry or specify other repositories (repository-url/image:tag)."
-    Default: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+    Description: Name of app requiring ALB exposure
+    Default: ecs-app
+  AppContainerPort:
+    Type: Number
+    Description: Container port of app requiring ALB exposure
+    Default: '9000'
+  AppHostPort:
+    Type: Number
+    Description: Host port of app requiring ALB exposure
+    Default: '9000'
+  ClusterName:
+    Type: String
+    Default: ecs-cluster
   ServiceName:
     Type: String
-    # update with the name of the service
-    Default: ECSService
-  ContainerPort:
+    Default: ecs-service
+  EnvironmentName:
+    Type: String
+    Default: Scala
+  HealthCheckGracePeriodSeconds:
     Type: Number
-    Default: 9000
-#   LoadBalancerPort:
-#     Type: Number
-#     Default: 80
-#   HealthCheckPath:
-#     Type: String
-#     Default: /healthcheck
-#   HostedZoneName:
-#     Type: String
-#     Default: company.com
-#   Subdomain:
-#     Type: String
-#     Default: myservice
-  # for autoscaling
-  MinContainers:
-    Type: Number
-    Default: 2
-  # for autoscaling
-  MaxContainers:
-    Type: Number
-    Default: 5
-#   # target CPU utilization (%)
-#   AutoScalingTargetValue:
-#     Type: Number
-#     Default: 50
-Resources:
-  Cluster:
+    Default: '30'
+  LoadBalancerScheme:
+    Type: String
+    Default: 'internet-facing'
+  VPC:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-0e34cf12359bb0b75
+  Subnets:
+    Type: CommaDelimitedList
+    Default: subnet-02f78c961f8031c9f, subnet-0e2555815ba730b91
+#   SecurityGroup:
+#     Type: AWS::EC2::SecurityGroup::Id
+#     Default: 
+    
+Resources: 
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId:
+         Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
+        
+  TaskSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId:
+         Ref: VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 9000
+        ToPort: 9000
+        CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+      - IpProtocol: tcp
+        FromPort: 9000
+        ToPort: 9000
+        CidrIp: 0.0.0.0/0
+      
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: ecs.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole'
+  
+  cluster:
     Type: AWS::ECS::Cluster
     Properties:
-      ClusterName: !Join ['', [!Ref ServiceName, Cluster]]
+      ClusterName: !Ref ClusterName
       
-  ECR: 
+  ecr: 
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "scala-image-repo"
+#       RepositoryPolicyText: 
+#         Version: "2012-10-17"
+#         Statement: 
+#           - 
+#             Sid: AllowPushPull
+#             Effect: Allow
+#             Principal: 
+#               AWS: 
+#                 - "arn:aws:iam::167996500928:user/cloud_user"              
+#             Action: 
+#               - "ecr:GetDownloadUrlForLayer"
+#               - "ecr:BatchGetImage"
+#               - "ecr:BatchCheckLayerAvailability"
+#               - "ecr:PutImage"
+#               - "ecr:InitiateLayerUpload"
+#               - "ecr:UploadLayerPart"
+#               - "ecr:CompleteLayerUpload"
       
-  TaskDefinition:
+  taskdefinition:
     Type: AWS::ECS::TaskDefinition
-    # Makes sure the log group is created before it is used.
     Properties:
-      # Name of the task definition. Subsequent versions of the task definition are grouped together under this name.
-      Family: !Join ['', [!Ref ServiceName, TaskDefinition]]
-      # awsvpc is required for Fargate
-      NetworkMode: awsvpc
+      NetworkMode: "awsvpc"
       ExecutionRoleArn: !Ref Role
+#       arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
-        - FARGATE
+        - "FARGATE"
       Cpu: 2048
       Memory: 4096
-      # A role needed by ECS.
-      # "The ARN of the task execution role that containers in this task can assume. All containers in this task are granted the permissions that are specified in this role."
-      # "There is an optional task execution IAM role that you can specify with Fargate to allow your Fargate tasks to make API calls to Amazon ECR."
-      ExecutionRoleArn: !Ref ExecutionRole
-      # "The Amazon Resource Name (ARN) of an AWS Identity and Access Management (IAM) role that grants containers in the task permission to call AWS APIs on your behalf."
-      TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
-        - Name: !Ref ServiceName
-          Image: !Ref Image
+        - Name: !Ref AppName
+          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Cpu: '10'
           PortMappings:
-            - ContainerPort: !Ref ContainerPort
-#           # Send logs to CloudWatch Logs
-#           LogConfiguration:
-#             LogDriver: awslogs
-#             Options:
-#               awslogs-region: !Ref AWS::Region
-#               awslogs-group: !Ref LogGroup
-#               awslogs-stream-prefix: ecs
-  # A role needed by ECS
-  ExecutionRole:
-    Type: AWS::IAM::Role
+            - ContainerPort: !Ref AppContainerPort
+              HostPort: !Ref AppHostPort
+          EntryPoint:
+            - /usr/sbin/apache2
+            - '-D'
+            - FOREGROUND
+          Memory: '500'
+          Essential: true
+        - Name: scala-image
+          Image: 668693617583.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo
+          Cpu: '10'
+          EntryPoint:
+            - sh
+            - '-c'
+          Memory: '500'
+          Essential: false                  
+      
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
-      RoleName: !Join ['', [!Ref ServiceName, ExecutionRole]]
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
-      ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
-  # A role for the containers
-  TaskRole:
-    Type: AWS::IAM::Role
+      Name: !Ref EnvironmentName
+      Subnets: !Ref Subnets 
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
-      RoleName: !Join ['', [!Ref ServiceName, TaskRole]]
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
- 
-  ContainerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref TargetGroup
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      GroupDescription: !Join ['', [!Ref ServiceName, ContainerSecurityGroup]]
+      Name: !Sub ${EnvironmentName}-default
+      TargetType: ip
       VpcId: !Ref VPC
-#       SecurityGroupIngress:
-#         - IpProtocol: tcp
-#           FromPort: !Ref ContainerPort
-#           ToPort: !Ref ContainerPort
-#           SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup
- 
-  Service:
+      Port: 80
+      Protocol: HTTP      
+   
+  service:
     Type: AWS::ECS::Service
-    # This dependency is needed so that the load balancer is setup correctly in time
-#     DependsOn:
-#       - ListenerHTTP
-    Properties: 
+    DependsOn: LoadBalancerListener
+    Properties:
+      Cluster: !Ref cluster
       ServiceName: !Ref ServiceName
-      Cluster: !Ref Cluster
-      TaskDefinition: !Ref TaskDefinition
-      DeploymentConfiguration:
-        MinimumHealthyPercent: 100
-        MaximumPercent: 200
-      DesiredCount: 0
-#       # This may need to be adjusted if the container takes a while to start up
-#       HealthCheckGracePeriodSeconds: 30
       LaunchType: FARGATE
-      NetworkConfiguration: 
+      TaskDefinition: !Ref taskdefinition
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+      DesiredCount: '0'
+      HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
+      LoadBalancers:
+        - ContainerName: !Ref "AppName"
+          ContainerPort: !Ref AppContainerPort
+          TargetGroupArn: !Ref TargetGroup
+      NetworkConfiguration:
         AwsvpcConfiguration:
-          # change to DISABLED if you're using private subnets that have access to a NAT gateway
-          AssignPublicIp: ENABLED
-          Subnets:
-            - !Ref SubnetA
-            - !Ref SubnetB
-          SecurityGroups:
-            - !Ref ContainerSecurityGroup
-#       LoadBalancers:
-#         - ContainerName: !Ref ServiceName
-#           ContainerPort: !Ref ContainerPort
-#           TargetGroupArn: !Ref TargetGroup
+          AssignPublicIp: 'ENABLED'
+          Subnets: !Ref Subnets 
+#           SecurityGroups: !Ref TaskSecurityGroup          
+#       Role: !Ref Role
+     
+  Cron:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: !Sub 'Run the ECS task every 10 minutes'
+      ScheduleExpression: cron(10 * * * ? *)
+      State: ENABLED
+      Targets:
+      - Id: !Ref ServiceName
+        RoleArn: !Ref Role
+        EcsParameters:
+          TaskDefinitionArn: !Ref taskdefinition
+          TaskCount: 1
+          LaunchType: 'FARGATE'
+          PlatformVersion: 'LATEST'
+          NetworkConfiguration:
+            AwsVpcConfiguration:
+              AssignPublicIp: DISABLED
+              SecurityGroups: !Ref TaskSecurityGroup
+              Subnets: !Ref Subnets
+        Arn: !Ref Role
