@@ -230,6 +230,6 @@ Resources:
         - Type: memberOf
           Expression: 'attribute:ecs.availability-zone != us-east-1d'
         - Type: distinctInstance            
-      Role: !Ref Role
+#       Role: !Ref Role
       
   
