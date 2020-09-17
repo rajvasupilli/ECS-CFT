@@ -132,18 +132,18 @@ Resources:
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
               HostPort: !Ref AppHostPort
-          EntryPoint:
-            - /usr/sbin/apache2
-            - '-D'
-            - FOREGROUND
+#           EntryPoint:
+#             - /usr/sbin/apache2
+#             - '-D'
+#             - FOREGROUND
           Memory: '500'
           Essential: true
         - Name: scala-image
           Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
-          EntryPoint:
-            - sh
-            - '-c'
+#           EntryPoint:
+#             - sh
+#             - '-c'
           Memory: '500'
           Essential: false                  
       
@@ -181,7 +181,7 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerListener
     Properties:
-      Cluster: !Ref cluster
+      Cluster: !Ref ecs-cluster
       ServiceName: !Ref ServiceName
       LaunchType: FARGATE
       TaskDefinition: !Ref taskdefinition
@@ -209,7 +209,7 @@ Resources:
       State: ENABLED
       Targets:
       - Arn: !GetAtt 
-          - cluster
+          - ecs-cluster
           - Arn
         RoleArn: !GetAtt 
           - Role
