@@ -211,7 +211,8 @@ Resources:
       - Id: !Ref ServiceName
         RoleArn: !Ref Role
         EcsParameters:
-          TaskDefinitionArn: !Ref taskdefinition
+          TaskDefinitionArn: 
+             - !GetAtt "taskdefinition.Arn"
           TaskCount: 1
           LaunchType: 'FARGATE'
           PlatformVersion: 'LATEST'
@@ -222,3 +223,4 @@ Resources:
 #                 - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
         Arn: 
+          - Fn::GetAtt": "EcsCluster.Arn"
