@@ -198,8 +198,8 @@ Resources:
           ContainerPort: !Ref AppContainerPort
           TargetGroupArn: !Ref TargetGroup
       NetworkConfiguration: 	
-		  AwsvpcConfiguration:	
-		  AssignPublicIp: DISABLED
+        AwsvpcConfiguration:	
+	  AssignPublicIp: 'ENABLED'
       PlacementStrategies:
         - Type: binpack
           Field: memory
