@@ -197,10 +197,10 @@ Resources:
         - ContainerName: !Ref "AppName"
           ContainerPort: !Ref AppContainerPort
           TargetGroupArn: !Ref TargetGroup
-      NetworkConfiguration: 	
-        AwsVpcConfiguration:	
-	  AssignPublicIp: 'ENABLED'
-	  Subnets: !Ref Subnets 
+      NetworkConfiguration:
+        AwsVpcConfiguration:
+          AssignPublicIp: 'ENABLED'
+          Subnets: !Ref Subnets 
           SecurityGroups: !Ref TaskSecurityGroup
       PlacementStrategies:
         - Type: binpack
