@@ -175,62 +175,7 @@ Resources:
       TargetType: ip
       VpcId: !Ref VPC
       Port: 80
-      Protocol: HTTP 
-      
-#   Type: AWS::Events::Rule
-#     Properties:
-#       Description: !Sub 'Trigger ${ServiceName} according to the specified schedule'
-#       ScheduleExpression: cron(10 * * * ? *)
-#       State: ENABLED
-#       Targets:
-#       - Id: !Sub '${ServiceName}-Fargate-Task'
-#         RoleArn: <Role Arn>
-#         EcsParameters:
-#           TaskDefinitionArn: !Ref TaskDefinition
-#           TaskCount: 1
-#           LaunchType: 'FARGATE'
-#           PlatformVersion: 'LATEST'
-#           NetworkConfiguration:
-#             AwsVpcConfiguration:
-#               AssignPublicIp: DISABLED
-#               SecurityGroups:
-#                 - <Security Group>
-#               Subnets:
-#                 - <Subnets>
-#         Arn: <Role ARN.
-
-  
-
-In order to define a scheduled ECS task in CloudFormation, you need to define a "AWS::Events::Rule" resource with an ECS task as a target.
-
-"TaskSchedule": {
-  "Type": "AWS::Events::Rule",
-  "Properties": {
-    "Description": "Run the scheduled task everyday at 10 AM, except for Weekend",
-    "Name": "scala-scheduled-task",
-    "ScheduleExpression": "cron(0 10 ? * MON-FRI *)",
-    "State": "ENABLED",
-    "Targets": [
-      {
-        "Id": "scala-ecs-task",
-        "RoleArn": {
-          "Fn::GetAtt": ["TaskSchedulerRole", "Arn"]
-        },
-        "EcsParameters": {
-          "TaskDefinitionArn": {
-            "Ref": "TaskDefinition"
-          },
-          "TaskCount": 1
-        },
-        "Arn": {
-          "Fn::GetAtt": ["EcsCluster", "Arn"]
-        }
-      }
-    ]
-  }
-}
-
-
+      Protocol: HTTP      
    
   service:
     Type: AWS::ECS::Service
@@ -255,5 +200,24 @@ In order to define a scheduled ECS task in CloudFormation, you need to define a 
           Subnets: !Ref Subnets 
 #           SecurityGroups: !Ref TaskSecurityGroup          
 #       Role: !Ref Role
-      
-  
+     
+  Cron:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: !Sub 'Run the ECS task every 10 minutes'
+      ScheduleExpression: cron(10 * * * ? *)
+      State: ENABLED
+      Targets:
+      - Id: !Ref ServiceName
+        RoleArn: !Ref Role
+        EcsParameters:
+          TaskDefinitionArn: !Ref TaskDefinition
+          TaskCount: 1
+          LaunchType: 'FARGATE'
+          PlatformVersion: 'LATEST'
+          NetworkConfiguration:
+            AwsVpcConfiguration:
+              AssignPublicIp: DISABLED
+              SecurityGroups: !Ref TaskSecurityGroup
+              Subnets: !Ref Subnets
+        Arn: !Ref Role
