@@ -45,10 +45,10 @@ Parameters:
   MaxContainers:
     Type: Number
     Default: 5
-  # target CPU utilization (%)
-  AutoScalingTargetValue:
-    Type: Number
-    Default: 50
+#   # target CPU utilization (%)
+#   AutoScalingTargetValue:
+#     Type: Number
+#     Default: 50
 Resources:
   Cluster:
     Type: AWS::ECS::Cluster
@@ -134,8 +134,8 @@ Resources:
         MinimumHealthyPercent: 100
         MaximumPercent: 200
       DesiredCount: 2
-      # This may need to be adjusted if the container takes a while to start up
-      HealthCheckGracePeriodSeconds: 30
+#       # This may need to be adjusted if the container takes a while to start up
+#       HealthCheckGracePeriodSeconds: 30
       LaunchType: FARGATE
       NetworkConfiguration: 
         AwsvpcConfiguration:
