@@ -218,6 +218,7 @@ Resources:
           NetworkConfiguration:
             AwsVpcConfiguration:
               AssignPublicIp: DISABLED
-              SecurityGroups: !GetAtt "TaskSecurityGroup.GroupId"
+              SecurityGroups: 
+                - !GetAtt "TaskSecurityGroup.GroupId"
               Subnets: !Ref Subnets
         Arn: !Ref Role
