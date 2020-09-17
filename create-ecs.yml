@@ -220,4 +220,4 @@ Resources:
               AssignPublicIp: DISABLED
 #               SecurityGroups: !Ref TaskSecurityGroup
               Subnets: !Ref Subnets
-        Arn: !Ref Role
+#         Arn: !Ref Role
