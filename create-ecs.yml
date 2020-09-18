@@ -73,7 +73,20 @@ Resources:
         FromPort: 9000
         ToPort: 9000
         CidrIp: 0.0.0.0/0
-        
+  Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: ecs.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole'    
+          
   ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
@@ -211,7 +224,7 @@ Resources:
       - Arn: !GetAtt 
           - cluster
           - Arn
-        RoleArn: !Ref TaskRole
+        RoleArn: !Ref Role
         Id: !Ref ServiceName
         EcsParameters:
           TaskDefinitionArn: !Ref taskdefinition
