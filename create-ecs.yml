@@ -98,7 +98,7 @@ TaskRole:
               Service: ecs-tasks.amazonaws.com
             Action: 'sts:AssumeRole'
             
-  cluster:
+cluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Ref ClusterName
