@@ -103,7 +103,7 @@ cluster:
     Properties:
       ClusterName: !Ref ClusterName
       
-  ecr: 
+ecr: 
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "scala-image-repo"
@@ -125,7 +125,7 @@ cluster:
               - "ecr:UploadLayerPart"
               - "ecr:CompleteLayerUpload"
       
-  taskdefinition:
+taskdefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
@@ -150,7 +150,7 @@ cluster:
           Memory: '500'
           Essential: true              
       
-  ALB:
+ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
@@ -171,7 +171,7 @@ cluster:
         - Type: forward
           TargetGroupArn: !Ref TargetGroup
 
-  TargetGroup:
+TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Sub ${EnvironmentName}-default
@@ -180,7 +180,7 @@ cluster:
       Port: 80
       Protocol: HTTP      
    
-  service:
+service:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerListener
     Properties:
