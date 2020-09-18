@@ -211,13 +211,13 @@ Resources:
       - Arn: !GetAtt 
           - cluster
           - Arn
-        RoleArn: !Ref TaskRole
+        RoleArn: !Ref ExecutionRole
         Id: !Ref ServiceName
         EcsParameters:
-#           TaskDefinitionArn: !Ref taskdefinition 
-          TaskDefinitionArn: !GetAtt 
-          - taskdefinition
-          - Arn
+          TaskDefinitionArn: !Ref taskdefinition
+#           TaskDefinitionArn: !GetAtt 
+#           - taskdefinition
+#           - Arn
           TaskCount: 1
           LaunchType: 'FARGATE'
           PlatformVersion: 'LATEST'
