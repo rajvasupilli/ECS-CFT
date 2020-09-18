@@ -74,22 +74,42 @@ Resources:
         ToPort: 9000
         CidrIp: 0.0.0.0/0
       
-  Role:
+ExecutionRole:
     Type: AWS::IAM::Role
     Properties:
+      RoleName: !Join ['', [!Ref ServiceName, ExecutionRole]]
       AssumeRolePolicyDocument:
-        Version: 2008-10-17
         Statement:
-          - Sid: ''
-            Effect: Allow
+          - Effect: Allow
             Principal:
-              Service: [
-               "lambda.amazonaws.com",
-               "ecs-tasks.amazonaws.com"
-              ]
+              Service: ecs-tasks.amazonaws.com
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole'
+        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
+        
+  TaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ['', [!Ref ServiceName, TaskRole]]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+            
+  AutoScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Join ['', [!Ref ServiceName, AutoScalingRole]]
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole'
   
   cluster:
     Type: AWS::ECS::Cluster
@@ -122,12 +142,13 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
-#       ExecutionRoleArn: !Ref Role
-      ExecutionRoleArn: arn:aws:iam::779820211664:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
+#       ExecutionRoleArn: arn:aws:iam::779820211664:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
         - "FARGATE"
       Cpu: 2048
       Memory: 4096
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref AppName
           Image: 779820211664.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
