@@ -191,7 +191,7 @@ Resources:
           AssignPublicIp: 'ENABLED'
           Subnets: !Ref Subnets 
 #           SecurityGroups: !Ref TaskSecurityGroup          
-#       Role: !Ref Role
+      Role: !Ref Role
      
 #   Cron:
 #     Type: AWS::Events::Rule
