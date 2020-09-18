@@ -218,16 +218,19 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       Description: !Sub 'Run the ECS task every 10 minutes'
-      ScheduleExpression: cron(* * * * ? *)
+      ScheduleExpression: cron(10 * * * ? *)
       State: ENABLED
       Targets:
       - Arn: !GetAtt 
           - cluster
           - Arn
-        RoleArn: !Ref Role
+        RoleArn: !GetAtt 
+          - Role
+          - Arn
         Id: !Ref ServiceName
+#         RoleArn: !Ref Role
         EcsParameters:
-          TaskDefinitionArn: !Ref taskdefinition
+          TaskDefinitionArn: !Ref taskdefinition 
 #           TaskDefinitionArn: !GetAtt 
 #           - taskdefinition
 #           - Arn
