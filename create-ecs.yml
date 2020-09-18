@@ -87,7 +87,7 @@ ExecutionRole:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
         
-  TaskRole:
+ TaskRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Join ['', [!Ref ServiceName, TaskRole]]
@@ -98,20 +98,7 @@ ExecutionRole:
               Service: ecs-tasks.amazonaws.com
             Action: 'sts:AssumeRole'
             
-  AutoScalingRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Join ['', [!Ref ServiceName, AutoScalingRole]]
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
-      ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole'
-  
-  cluster:
+ cluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Ref ClusterName
