@@ -211,7 +211,7 @@ Resources:
       - Arn: !GetAtt 
           - cluster
           - Arn
-        RoleArn: !Ref ExecutionRole
+        RoleArn: !Ref TaskRole
         Id: !Ref ServiceName
         EcsParameters:
           TaskDefinitionArn: !Ref taskdefinition
