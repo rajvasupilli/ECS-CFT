@@ -30,10 +30,10 @@ Parameters:
     Default: 'internet-facing'
   VPC:
     Type: AWS::EC2::VPC::Id
-    Default: vpc-0249ca2de7d47fe75
+    Default: vpc-0078573daf59b7dbb
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-0901f60559c06a2e5, subnet-061b1c12d40780206
+    Default: subnet-043fe132facca1075, subnet-0d2e41aab464826f2
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
@@ -105,7 +105,7 @@ Resources:
             Effect: Allow
             Principal: 
               AWS: 
-                - "arn:aws:iam::255252818588:user/cloud_user"              
+                - "arn:aws:iam::779820211664:user/pavan"              
             Action: 
               - "ecr:GetDownloadUrlForLayer"
               - "ecr:BatchGetImage"
@@ -127,7 +127,7 @@ Resources:
       Memory: 4096
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 255252818588.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+          Image: 779820211664.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
@@ -180,7 +180,7 @@ Resources:
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
-      DesiredCount: '0'
+      DesiredCount: '1'
       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
       LoadBalancers:
         - ContainerName: !Ref "AppName"
