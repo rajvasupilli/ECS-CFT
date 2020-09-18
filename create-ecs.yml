@@ -87,7 +87,7 @@ ExecutionRole:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
         
- TaskRole:
+TaskRole:
     Type: AWS::IAM::Role
     Properties:
       RoleName: !Join ['', [!Ref ServiceName, TaskRole]]
