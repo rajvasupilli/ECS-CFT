@@ -216,7 +216,7 @@ Resources:
           - Arn
         Id: !Ref ServiceName
         EcsParameters:
-          TaskDefinitionArn: !Ref taskdefinition 
+#           TaskDefinitionArn: !Ref taskdefinition 
           TaskDefinitionArn: !GetAtt 
           - taskdefinition
           - Arn
