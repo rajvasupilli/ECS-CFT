@@ -30,10 +30,10 @@ Parameters:
     Default: 'internet-facing'
   VPC:
     Type: AWS::EC2::VPC::Id
-    Default: vpc-0078573daf59b7dbb
+    Default: vpc-00fd91bfe4bf20d22
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-043fe132facca1075, subnet-0d2e41aab464826f2
+    Default: subnet-05d557015d27fb217, subnet-00369d3316a7b62bd
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
@@ -74,36 +74,26 @@ Resources:
         ToPort: 9000
         CidrIp: 0.0.0.0/0
       
-ExecutionRole:
+  Role:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Join ['', [!Ref ServiceName, ExecutionRole]]
       AssumeRolePolicyDocument:
+        Version: 2008-10-17
         Statement:
-          - Effect: Allow
+          - Sid: ''
+            Effect: Allow
             Principal:
-              Service: ecs-tasks.amazonaws.com
+              Service: ecs.amazonaws.com
             Action: 'sts:AssumeRole'
       ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
-        
-TaskRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Join ['', [!Ref ServiceName, TaskRole]]
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
-            
-cluster:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole'
+  
+  cluster:
     Type: AWS::ECS::Cluster
     Properties:
       ClusterName: !Ref ClusterName
       
-ecr: 
+  ecr: 
     Type: AWS::ECR::Repository
     Properties: 
       RepositoryName: "scala-image-repo"
@@ -115,7 +105,7 @@ ecr:
             Effect: Allow
             Principal: 
               AWS: 
-                - "arn:aws:iam::779820211664:user/pavan"              
+                - "arn:aws:iam::566716581275:user/cloud_user"              
             Action: 
               - "ecr:GetDownloadUrlForLayer"
               - "ecr:BatchGetImage"
@@ -125,32 +115,32 @@ ecr:
               - "ecr:UploadLayerPart"
               - "ecr:CompleteLayerUpload"
       
-taskdefinition:
+  taskdefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
-#       ExecutionRoleArn: arn:aws:iam::779820211664:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
+      ExecutionRoleArn: !Ref Role
+#       arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
         - "FARGATE"
       Cpu: 2048
       Memory: 4096
-      ExecutionRoleArn: !Ref ExecutionRole
-      TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 779820211664.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
               HostPort: !Ref AppHostPort
-#           EntryPoint:
-#             - /usr/sbin/apache2
-#             - '-D'
-#             - FOREGROUND
           Memory: '500'
-          Essential: true              
+          Essential: true
+        - Name: scala-image
+          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+          Cpu: '10'
+          Memory: '500'
+          Essential: false                  
       
-ALB:
+  ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref EnvironmentName
@@ -161,7 +151,7 @@ ALB:
         - Key: Name
           Value: !Ref EnvironmentName
 
-LoadBalancerListener:
+  LoadBalancerListener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       LoadBalancerArn: !Ref ALB
@@ -171,7 +161,7 @@ LoadBalancerListener:
         - Type: forward
           TargetGroupArn: !Ref TargetGroup
 
-TargetGroup:
+  TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       Name: !Sub ${EnvironmentName}-default
@@ -180,7 +170,7 @@ TargetGroup:
       Port: 80
       Protocol: HTTP      
    
-service:
+  service:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerListener
     Properties:
@@ -191,7 +181,7 @@ service:
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 100
-      DesiredCount: '1'
+      DesiredCount: '0'
       HealthCheckGracePeriodSeconds: !Ref HealthCheckGracePeriodSeconds
       LoadBalancers:
         - ContainerName: !Ref "AppName"
