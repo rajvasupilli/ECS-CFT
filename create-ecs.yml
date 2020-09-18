@@ -137,15 +137,7 @@ Resources:
 #             - '-D'
 #             - FOREGROUND
           Memory: '500'
-          Essential: true
-        - Name: scala-image
-          Image: 255252818588.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
-          Cpu: '10'
-#           EntryPoint:
-#             - sh
-#             - '-c'
-          Memory: '500'
-          Essential: false                  
+          Essential: true              
       
   ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
