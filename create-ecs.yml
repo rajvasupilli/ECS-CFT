@@ -129,7 +129,7 @@ Resources:
             Effect: Allow
             Principal: 
               AWS: 
-                - "arn:aws:iam::566716581275:user/cloud_user"              
+                - "arn:aws:iam::779820211664:user/pavan"              
             Action: 
               - "ecr:GetDownloadUrlForLayer"
               - "ecr:BatchGetImage"
@@ -143,26 +143,23 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       NetworkMode: "awsvpc"
-      ExecutionRoleArn: !Ref Role
+#       ExecutionRoleArn: !Ref Role
 #       arn:aws:iam::654328202400:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS
       RequiresCompatibilities:
         - "FARGATE"
       Cpu: 2048
       Memory: 4096
+      ExecutionRoleArn: !Ref ExecutionRole
+      TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+          Image: 779820211664.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
               HostPort: !Ref AppHostPort
           Memory: '500'
-          Essential: true
-        - Name: scala-image
-          Image: 566716581275.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
-          Cpu: '10'
-          Memory: '500'
-          Essential: false                  
+          Essential: true               
       
   ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
