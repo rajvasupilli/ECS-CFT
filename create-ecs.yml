@@ -30,10 +30,10 @@ Parameters:
     Default: 'internet-facing'
   VPC:
     Type: AWS::EC2::VPC::Id
-    Default: vpc-0321dc236dcfa3a18
+    Default: vpc-056d10f5165a91180
   Subnets:
     Type: CommaDelimitedList
-    Default: subnet-0466a733bee5fd97f, subnet-0c5793caec063e067
+    Default: subnet-042430fe326ba70d1, subnet-0a7a31f152e8a2079
 #   SecurityGroup:
 #     Type: AWS::EC2::SecurityGroup::Id
 #     Default: 
@@ -128,7 +128,7 @@ Resources:
             Effect: Allow
             Principal: 
               AWS: 
-                - "arn:aws:iam::230604829846:user/cloud_user"              
+                - "arn:aws:iam::488070649402:user/cloud_user"              
             Action: 
               - "ecr:GetDownloadUrlForLayer"
               - "ecr:BatchGetImage"
@@ -152,7 +152,7 @@ Resources:
       TaskRoleArn: !Ref TaskRole
       ContainerDefinitions:
         - Name: !Ref AppName
-          Image: 230604829846.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
+          Image: 488070649402.dkr.ecr.us-east-1.amazonaws.com/scala-image-repo:latest
           Cpu: '10'
           PortMappings:
             - ContainerPort: !Ref AppContainerPort
