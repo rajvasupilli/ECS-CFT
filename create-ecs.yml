@@ -187,7 +187,7 @@ Resources:
       Name: !Sub ${EnvironmentName}-default
       TargetType: ip
       VpcId: !Ref VPC
-      Port: 80
+      Port: 9000
       Protocol: HTTP      
    
   service:
