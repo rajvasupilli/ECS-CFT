@@ -30,7 +30,7 @@ Parameters:
     Default: 'internet-facing'
   VPC:
     Type: AWS::EC2::VPC::Id
-    Default: vvpc-0cf1c8ed2e3662213
+    Default: vpc-0cf1c8ed2e3662213
   Subnets:
     Type: CommaDelimitedList
     Default: subnet-009e5d27b794375c8, subnet-08806bc3072e5c514
