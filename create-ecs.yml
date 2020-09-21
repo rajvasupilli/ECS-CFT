@@ -175,7 +175,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
       LoadBalancerArn: !Ref ALB
-      Port: 80
+      Port: 9000
       Protocol: HTTP
       DefaultActions:
         - Type: forward
